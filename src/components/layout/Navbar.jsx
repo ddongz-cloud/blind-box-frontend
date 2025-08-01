@@ -57,11 +57,11 @@ const Navbar = () => {
                   <span>商店</span>
                 </Link>
 
-                <Link 
-                  to="/inventory" 
+                <Link
+                  to="/inventory"
                   className={`flex items-center space-x-2 px-3 py-2 text-sm font-pixel border-2 transition-all duration-75 ${
-                    isActive('/inventory') 
-                      ? 'border-blue-500 bg-blue-50 text-blue-600' 
+                    isActive('/inventory')
+                      ? 'border-blue-500 bg-blue-50 text-blue-600'
                       : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-500'
                   }`}
                 >
@@ -69,11 +69,23 @@ const Navbar = () => {
                   <span>收藏</span>
                 </Link>
 
-                <Link 
-                  to="/profile" 
+                <Link
+                  to="/orders"
                   className={`flex items-center space-x-2 px-3 py-2 text-sm font-pixel border-2 transition-all duration-75 ${
-                    isActive('/profile') 
-                      ? 'border-blue-500 bg-blue-50 text-blue-600' 
+                    isActive('/orders')
+                      ? 'border-blue-500 bg-blue-50 text-blue-600'
+                      : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-500'
+                  }`}
+                >
+                  <span>📋</span>
+                  <span>订单</span>
+                </Link>
+
+                <Link
+                  to="/profile"
+                  className={`flex items-center space-x-2 px-3 py-2 text-sm font-pixel border-2 transition-all duration-75 ${
+                    isActive('/profile')
+                      ? 'border-blue-500 bg-blue-50 text-blue-600'
                       : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-500'
                   }`}
                 >
@@ -91,7 +103,7 @@ const Navbar = () => {
                 {user && (
                   <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-yellow-100 border-2 border-gray-800 text-sm font-pixel">
                     <span>💰</span>
-                    <span>{user.points || 0}</span>
+                    <span>{(user.points || 0).toFixed(2)}</span>
                   </div>
                 )}
                 <PixelButton

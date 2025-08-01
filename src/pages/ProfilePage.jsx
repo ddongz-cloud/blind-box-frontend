@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
 import { useAuthStore } from '@/stores/authStore'
@@ -8,6 +9,7 @@ import PixelInput from '@/components/ui/PixelInput'
 import PixelButton from '@/components/ui/PixelButton'
 
 const ProfilePage = () => {
+  const navigate = useNavigate()
   const { user, updateUser } = useAuthStore()
   const [loading, setLoading] = useState(false)
   const [pointsHistory, setPointsHistory] = useState([])
@@ -126,9 +128,9 @@ const ProfilePage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-yellow-50 border-2 border-yellow-200">
                   <div className="text-2xl font-pixel font-bold text-yellow-600">
-                    {user?.points || 0}
+                    {(user?.points || 0).toFixed(2)}
                   </div>
-                  <div className="text-xs text-gray-600">当前积分</div>
+                  <div className="text-xs text-gray-600">当前金币</div>
                 </div>
                 
                 <div className="text-center p-4 bg-blue-50 border-2 border-blue-200">
@@ -140,23 +142,86 @@ const ProfilePage = () => {
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-pixel font-bold text-gray-700">最近积分记录</h3>
+                <h3 className="font-pixel font-bold text-gray-700">最近金币记录</h3>
                 <div className="space-y-2 max-h-40 overflow-y-auto">
                   {pointsHistory.length > 0 ? (
                     pointsHistory.map((record, index) => (
                       <div key={index} className="flex justify-between items-center p-2 bg-gray-50 border border-gray-200 text-xs">
-                        <span>{record.description || '积分变动'}</span>
+                        <span>{record.description || '金币变动'}</span>
                         <span className={`font-pixel ${record.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {record.amount > 0 ? '+' : ''}{record.amount}
+                          {record.amount > 0 ? '+' : ''}{(record.amount || 0).toFixed(2)}
                         </span>
                       </div>
                     ))
                   ) : (
                     <div className="text-center text-gray-500 text-xs py-4">
-                      暂无积分记录
+                      无记录
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
+          </PixelCard>
+        </section>
+
+        {/* 订单管理 */}
+        <section>
+          <PixelCard>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-pixel font-bold text-gray-800">
+                  📋 订单管理
+                </h2>
+                <PixelButton
+                  size="sm"
+                  onClick={() => navigate('/orders')}
+                >
+                  查看全部
+                </PixelButton>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                  className="p-4 bg-yellow-50 border-2 border-yellow-200 rounded cursor-pointer hover:bg-yellow-100 transition-colors"
+                  onClick={() => navigate('/orders?status=pending')}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">⏳</div>
+                    <div className="font-pixel font-bold text-yellow-600">待支付</div>
+                    <div className="text-xs text-gray-600">查看待支付订单</div>
+                  </div>
+                </div>
+
+                <div
+                  className="p-4 bg-blue-50 border-2 border-blue-200 rounded cursor-pointer hover:bg-blue-100 transition-colors"
+                  onClick={() => navigate('/orders?status=paid')}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">💰</div>
+                    <div className="font-pixel font-bold text-blue-600">已支付</div>
+                    <div className="text-xs text-gray-600">查看已支付订单</div>
+                  </div>
+                </div>
+
+                <div
+                  className="p-4 bg-green-50 border-2 border-green-200 rounded cursor-pointer hover:bg-green-100 transition-colors"
+                  onClick={() => navigate('/orders?status=completed')}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">✅</div>
+                    <div className="font-pixel font-bold text-green-600">已完成</div>
+                    <div className="text-xs text-gray-600">查看已完成订单</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <PixelButton
+                  variant="secondary"
+                  onClick={() => navigate('/store')}
+                >
+                  🛒 去购买盲盒
+                </PixelButton>
               </div>
             </div>
           </PixelCard>

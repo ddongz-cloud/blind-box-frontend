@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useBlindboxStore } from '@/stores/blindboxStore'
 import { useAuthStore } from '@/stores/authStore'
 import { orderService } from '@/services/order'
 import BlindBoxCard from '@/components/business/BlindBoxCard'
-import DrawResultModal from '@/components/business/DrawResultModal'
 import PixelInput from '@/components/ui/PixelInput'
 import PixelButton from '@/components/ui/PixelButton'
 import PixelCard from '@/components/ui/PixelCard'
 
 const StorePage = () => {
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [purchasing, setPurchasing] = useState(false)
-  const [showDrawResult, setShowDrawResult] = useState(false)
-  const [drawItems, setDrawItems] = useState([])
   
   const { user } = useAuthStore()
   const {
@@ -50,7 +49,7 @@ const StorePage = () => {
     }
 
     if (user.points < series.price) {
-      toast.error('积分不足')
+      toast.error('金币不足')
       return
     }
 
@@ -62,23 +61,14 @@ const StorePage = () => {
       }
 
       const response = await orderService.createOrder(orderData)
-      toast.success('购买成功！')
+      toast.success('订单创建成功！')
 
-      // 更新用户积分（扣除购买费用）
-      const { updateUser } = useAuthStore.getState()
-      updateUser({ points: user.points - series.price })
-
-      // 执行抽取
-      const drawResponse = await orderService.drawBlindBox(response.data.orderId)
-      const items = drawResponse.data || []
-
-      // 显示抽取结果模态框
-      setDrawItems(items)
-      setShowDrawResult(true)
+      // 跳转到订单详情页面进行支付
+      navigate(`/orders/${response.data.orderId}`)
 
     } catch (error) {
-      console.error('购买失败:', error)
-      toast.error(error.response?.data?.message || error.message || '购买失败')
+      console.error('创建订单失败:', error)
+      toast.error(error.response?.data?.message || error.message || '创建订单失败')
     } finally {
       setPurchasing(false)
     }
@@ -105,7 +95,7 @@ const StorePage = () => {
           <PixelCard padding="sm">
             <div className="flex items-center space-x-2 px-4 py-2">
               <span className="text-yellow-600">💰</span>
-              <span className="text-sm font-pixel font-bold">{user.points || 0} 金币</span>
+              <span className="text-sm font-pixel font-bold">{(user.points || 0).toFixed(2)} 金币</span>
             </div>
           </PixelCard>
         )}
@@ -181,12 +171,7 @@ const StorePage = () => {
         </div>
       )}
 
-      {/* 抽取结果模态框 */}
-      <DrawResultModal
-        isOpen={showDrawResult}
-        onClose={() => setShowDrawResult(false)}
-        items={drawItems}
-      />
+
     </div>
   )
 }

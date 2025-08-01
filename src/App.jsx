@@ -13,6 +13,8 @@ const StorePage = lazy(() => import('@/pages/StorePage'))
 const SeriesDetailPage = lazy(() => import('@/pages/SeriesDetailPage'))
 const InventoryPage = lazy(() => import('@/pages/InventoryPage'))
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
+const OrderListPage = lazy(() => import('@/pages/OrderListPage'))
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetailPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 // 加载组件
@@ -67,6 +69,16 @@ function App() {
             <Route path="profile" element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="orders" element={
+              <ProtectedRoute>
+                <OrderListPage />
+              </ProtectedRoute>
+            } />
+            <Route path="orders/:orderId" element={
+              <ProtectedRoute>
+                <OrderDetailPage />
               </ProtectedRoute>
             } />
           </Route>

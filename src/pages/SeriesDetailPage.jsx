@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast'
 import { useBlindboxStore } from '@/stores/blindboxStore'
 import { useAuthStore } from '@/stores/authStore'
 import { orderService } from '@/services/order'
-import DrawResultModal from '@/components/business/DrawResultModal'
 import PixelCard from '@/components/ui/PixelCard'
 import PixelButton from '@/components/ui/PixelButton'
 
@@ -12,8 +11,6 @@ const SeriesDetailPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [purchasing, setPurchasing] = useState(false)
-  const [showDrawResult, setShowDrawResult] = useState(false)
-  const [drawItems, setDrawItems] = useState([])
   
   const { user } = useAuthStore()
   const { 
@@ -40,7 +37,7 @@ const SeriesDetailPage = () => {
     }
 
     if (user.points < currentSeries.price) {
-      toast.error('积分不足')
+      toast.error('金币不足')
       return
     }
 
@@ -52,23 +49,14 @@ const SeriesDetailPage = () => {
       }
 
       const response = await orderService.createOrder(orderData)
-      toast.success('购买成功！')
+      toast.success('订单创建成功！')
 
-      // 更新用户积分（扣除购买费用）
-      const { updateUser } = useAuthStore.getState()
-      updateUser({ points: user.points - currentSeries.price })
-
-      // 执行抽取
-      const drawResponse = await orderService.drawBlindBox(response.data.orderId)
-      const items = drawResponse.data || []
-
-      // 显示抽取结果模态框
-      setDrawItems(items)
-      setShowDrawResult(true)
+      // 跳转到订单详情页面进行支付
+      navigate(`/orders/${response.data.orderId}`)
 
     } catch (error) {
-      console.error('购买失败:', error)
-      toast.error(error.response?.data?.message || error.message || '购买失败')
+      console.error('创建订单失败:', error)
+      toast.error(error.response?.data?.message || error.message || '创建订单失败')
     } finally {
       setPurchasing(false)
     }
@@ -222,12 +210,7 @@ const SeriesDetailPage = () => {
         </div>
       </div>
 
-      {/* 抽取结果模态框 */}
-      <DrawResultModal
-        isOpen={showDrawResult}
-        onClose={() => setShowDrawResult(false)}
-        items={drawItems}
-      />
+
     </div>
   )
 }

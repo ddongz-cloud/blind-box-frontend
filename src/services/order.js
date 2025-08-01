@@ -25,4 +25,9 @@ export const orderService = {
   cancelOrder: async (orderId) => {
     return await apiClient.put(`/api/orders/${orderId}/cancel`)
   },
+
+  // 支付订单
+  payOrder: async (orderId) => {
+    return await apiClient.put(`/api/orders/${orderId}/pay`)
+  },
 }
