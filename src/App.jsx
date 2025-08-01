@@ -15,6 +15,7 @@ const InventoryPage = lazy(() => import('@/pages/InventoryPage'))
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const OrderListPage = lazy(() => import('@/pages/OrderListPage'))
 const OrderDetailPage = lazy(() => import('@/pages/OrderDetailPage'))
+const PlayerShowListPage = lazy(() => import('@/pages/PlayerShowListPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 // 加载组件
@@ -81,6 +82,7 @@ function App() {
                 <OrderDetailPage />
               </ProtectedRoute>
             } />
+            <Route path="player-shows" element={<PlayerShowListPage />} />
           </Route>
 
           {/* 404页面 */}
