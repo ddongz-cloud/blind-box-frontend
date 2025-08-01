@@ -4,6 +4,7 @@ import { useBlindboxStore } from '@/stores/blindboxStore'
 import { useAuthStore } from '@/stores/authStore'
 import { orderService } from '@/services/order'
 import BlindBoxCard from '@/components/business/BlindBoxCard'
+import DrawResultModal from '@/components/business/DrawResultModal'
 import PixelInput from '@/components/ui/PixelInput'
 import PixelButton from '@/components/ui/PixelButton'
 import PixelCard from '@/components/ui/PixelCard'
@@ -12,6 +13,8 @@ const StorePage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [purchasing, setPurchasing] = useState(false)
+  const [showDrawResult, setShowDrawResult] = useState(false)
+  const [drawItems, setDrawItems] = useState([])
   
   const { user } = useAuthStore()
   const {
@@ -55,19 +58,27 @@ const StorePage = () => {
     try {
       const orderData = {
         seriesId: series.id,
-        quantity: 1,
-        paymentMethod: 'points'
+        quantity: 1
       }
-      
+
       const response = await orderService.createOrder(orderData)
       toast.success('购买成功！')
-      
-      // 可以跳转到抽取页面或直接执行抽取
+
+      // 更新用户积分（扣除购买费用）
+      const { updateUser } = useAuthStore.getState()
+      updateUser({ points: user.points - series.price })
+
+      // 执行抽取
       const drawResponse = await orderService.drawBlindBox(response.data.orderId)
-      toast.success(`恭喜获得：${drawResponse.data.items.map(item => item.name).join(', ')}`)
-      
+      const items = drawResponse.data || []
+
+      // 显示抽取结果模态框
+      setDrawItems(items)
+      setShowDrawResult(true)
+
     } catch (error) {
-      toast.error(error.message || '购买失败')
+      console.error('购买失败:', error)
+      toast.error(error.response?.data?.message || error.message || '购买失败')
     } finally {
       setPurchasing(false)
     }
@@ -169,6 +180,13 @@ const StorePage = () => {
           </PixelCard>
         </div>
       )}
+
+      {/* 抽取结果模态框 */}
+      <DrawResultModal
+        isOpen={showDrawResult}
+        onClose={() => setShowDrawResult(false)}
+        items={drawItems}
+      />
     </div>
   )
 }
