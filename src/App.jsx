@@ -10,6 +10,7 @@ const HomePage = lazy(() => import('@/pages/HomePage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const StorePage = lazy(() => import('@/pages/StorePage'))
+const SeriesDetailPage = lazy(() => import('@/pages/SeriesDetailPage'))
 const InventoryPage = lazy(() => import('@/pages/InventoryPage'))
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
@@ -51,6 +52,11 @@ function App() {
             <Route path="store" element={
               <ProtectedRoute>
                 <StorePage />
+              </ProtectedRoute>
+            } />
+            <Route path="series/:id" element={
+              <ProtectedRoute>
+                <SeriesDetailPage />
               </ProtectedRoute>
             } />
             <Route path="inventory" element={

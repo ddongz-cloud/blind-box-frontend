@@ -49,9 +49,25 @@ export const useBlindboxStore = create((set, get) => ({
     set({ loading: true })
     try {
       const response = await blindboxService.getSeriesDetail(id)
-      set({ 
+      set({
         currentSeries: response.data,
-        loading: false 
+        loading: false
+      })
+    } catch (error) {
+      set({ loading: false })
+      throw error
+    }
+  },
+
+  // 获取热门系列
+  fetchPopularSeries: async (params) => {
+    set({ loading: true })
+    try {
+      const response = await blindboxService.getPopularSeries(params)
+      set({
+        series: response.data,
+        pagination: { page: 1, limit: response.data.length, total: response.data.length },
+        loading: false
       })
     } catch (error) {
       set({ loading: false })

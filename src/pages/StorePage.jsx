@@ -14,20 +14,27 @@ const StorePage = () => {
   const [purchasing, setPurchasing] = useState(false)
   
   const { user } = useAuthStore()
-  const { 
-    series, 
-    loading, 
-    fetchSeries, 
-    searchSeries 
+  const {
+    series,
+    loading,
+    fetchSeries,
+    searchSeries,
+    fetchPopularSeries
   } = useBlindboxStore()
 
   useEffect(() => {
-    fetchSeries({ page: 1, limit: 12 })
-  }, [fetchSeries])
+    if (selectedCategory === 'popular') {
+      fetchPopularSeries({ limit: 12 })
+    } else {
+      fetchSeries({ page: 1, limit: 12 })
+    }
+  }, [fetchSeries, fetchPopularSeries, selectedCategory])
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
       searchSeries({ keyword: searchTerm, category: selectedCategory !== 'all' ? selectedCategory : undefined })
+    } else if (selectedCategory === 'popular') {
+      fetchPopularSeries({ limit: 12 })
     } else {
       fetchSeries({ page: 1, limit: 12, category: selectedCategory !== 'all' ? selectedCategory : undefined })
     }
@@ -68,9 +75,7 @@ const StorePage = () => {
 
   const categories = [
     { key: 'all', label: '全部' },
-    { key: 'anime', label: '动漫' },
-    { key: 'game', label: '游戏' },
-    { key: 'movie', label: '电影' },
+    { key: 'popular', label: '热门' },
   ]
 
   return (

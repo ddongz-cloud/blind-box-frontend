@@ -1,9 +1,24 @@
+import { useNavigate } from 'react-router-dom'
 import PixelCard from '@/components/ui/PixelCard'
 import PixelButton from '@/components/ui/PixelButton'
 
 const BlindBoxCard = ({ series, onPurchase }) => {
+  const navigate = useNavigate()
+
+  const handleCardClick = () => {
+    navigate(`/series/${series.id}`)
+  }
+
+  const handlePurchaseClick = (e) => {
+    e.stopPropagation() // 阻止事件冒泡，避免触发卡片点击
+    onPurchase(series)
+  }
   return (
-    <PixelCard hover className="h-full flex flex-col">
+    <PixelCard
+      hover
+      className="h-full flex flex-col cursor-pointer transition-transform hover:scale-105"
+      onClick={handleCardClick}
+    >
       <div className="relative h-48 overflow-hidden">
         <img 
           src={series.coverImage || 'https://via.placeholder.com/300x200?text=盲盒'} 
@@ -30,8 +45,11 @@ const BlindBoxCard = ({ series, onPurchase }) => {
         <h3 className="font-pixel font-bold text-gray-800 mb-2 text-sm">
           {series.name}
         </h3>
-        <p className="text-xs text-gray-600 mb-4 flex-1 line-clamp-3">
+        <p className="text-xs text-gray-600 mb-2 flex-1 line-clamp-3">
           {series.description || '神秘的盲盒等待您的开启...'}
+        </p>
+        <p className="text-xs text-blue-600 mb-4 font-pixel">
+          点击查看详情 →
         </p>
         
         <div className="flex items-center justify-between">
@@ -39,9 +57,9 @@ const BlindBoxCard = ({ series, onPurchase }) => {
             <span>💰</span>
             <span className="font-pixel text-sm">{series.price || 99}</span>
           </div>
-          <PixelButton 
-            size="sm" 
-            onClick={() => onPurchase(series)}
+          <PixelButton
+            size="sm"
+            onClick={handlePurchaseClick}
           >
             购买
           </PixelButton>
