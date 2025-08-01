@@ -12,7 +12,7 @@ const HomePage = () => {
       <section className="text-center space-y-6">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-pixel font-bold text-gray-800 leading-tight">
-            🎮 像素盲盒机
+            盲盒抽盒机
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
             收集独特的像素艺术玩偶，体验复古游戏的乐趣

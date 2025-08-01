@@ -90,15 +90,7 @@ const StorePage = () => {
           <p className="text-sm text-gray-600 mt-2">选择你喜欢的系列，开始抽取之旅</p>
         </div>
 
-        {/* 用户金币显示 */}
-        {user && (
-          <PixelCard padding="sm">
-            <div className="flex items-center space-x-2 px-4 py-2">
-              <span className="text-yellow-600">💰</span>
-              <span className="text-sm font-pixel font-bold">{(user.points || 0).toFixed(2)} 金币</span>
-            </div>
-          </PixelCard>
-        )}
+
       </header>
 
       {/* 搜索和筛选区域 */}

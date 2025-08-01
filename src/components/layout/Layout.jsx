@@ -11,7 +11,7 @@ const Layout = () => {
       <footer className="bg-white border-t-2 border-gray-800 py-4">
         <div className="container mx-auto px-4 text-center">
           <p className="text-xs font-pixel text-gray-600">
-            © 2024 PixelBox 盲盒机. Made with ❤️
+            © 2025 BlindBox Made with 241880060
           </p>
         </div>
       </footer>
