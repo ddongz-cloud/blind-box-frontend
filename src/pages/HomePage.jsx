@@ -1,79 +1,122 @@
-import React from 'react';
+import { Link } from 'react-router-dom'
+import { useAuthStore } from '@/stores/authStore'
+import PixelButton from '@/components/ui/PixelButton'
+import PixelCard from '@/components/ui/PixelCard'
 
 const HomePage = () => {
+  const { isAuthenticated } = useAuthStore()
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            🎁 盲盒抽盒机 🎁
+    <div className="container mx-auto px-4 py-8 space-y-12">
+      {/* 英雄区域 */}
+      <section className="text-center space-y-6">
+        <div className="space-y-4">
+          <h1 className="text-4xl md:text-6xl font-pixel font-bold text-gray-800 leading-tight">
+            🎮 像素盲盒机
           </h1>
-          <p className="text-xl text-white opacity-90">
-            探索神秘的盲盒世界，发现惊喜收藏品
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            收集独特的像素艺术玩偶，体验复古游戏的乐趣
           </p>
-        </header>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {isAuthenticated ? (
+            <>
+              <Link to="/store">
+                <PixelButton size="lg">
+                  开始收集
+                </PixelButton>
+              </Link>
+              <Link to="/inventory">
+                <PixelButton variant="outline" size="lg">
+                  查看收藏
+                </PixelButton>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/register">
+                <PixelButton size="lg">
+                  立即注册
+                </PixelButton>
+              </Link>
+              <Link to="/login">
+                <PixelButton variant="outline" size="lg">
+                  登录账户
+                </PixelButton>
+              </Link>
+            </>
+          )}
+        </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* 盲盒系列展示卡片 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-            <div className="h-48 bg-gradient-to-r from-blue-400 to-purple-500"></div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">动漫系列</h3>
-              <p className="text-gray-600 mb-4">收集你最喜爱的动漫角色</p>
-              <button className="w-full bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition-colors">
-                立即抽取
-              </button>
-            </div>
+      {/* 特色展示区域 */}
+      <section className="grid md:grid-cols-3 gap-8">
+        <PixelCard hover>
+          <div className="p-6 text-center space-y-4">
+            <div className="text-4xl">🎁</div>
+            <h3 className="text-lg font-pixel font-bold text-gray-800">盲盒抽取</h3>
+            <p className="text-sm text-gray-600">
+              体验刺激的盲盒开启，收集稀有玩偶
+            </p>
           </div>
-
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-            <div className="h-48 bg-gradient-to-r from-green-400 to-blue-500"></div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">游戏系列</h3>
-              <p className="text-gray-600 mb-4">游戏角色限定收藏</p>
-              <button className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
-                立即抽取
-              </button>
-            </div>
+        </PixelCard>
+        
+        <PixelCard hover>
+          <div className="p-6 text-center space-y-4">
+            <div className="text-4xl">📚</div>
+            <h3 className="text-lg font-pixel font-bold text-gray-800">收藏图鉴</h3>
+            <p className="text-sm text-gray-600">
+              建立专属收藏，展示珍贵玩偶
+            </p>
           </div>
+        </PixelCard>
+        
+        <PixelCard hover>
+          <div className="p-6 text-center space-y-4">
+            <div className="text-4xl">👥</div>
+            <h3 className="text-lg font-pixel font-bold text-gray-800">社区分享</h3>
+            <p className="text-sm text-gray-600">
+              与其他收藏家交流分享心得
+            </p>
+          </div>
+        </PixelCard>
+      </section>
 
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-            <div className="h-48 bg-gradient-to-r from-pink-400 to-red-500"></div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">限定系列</h3>
-              <p className="text-gray-600 mb-4">稀有限定款等你发现</p>
-              <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">
-                立即抽取
-              </button>
-            </div>
+      {/* 游戏特色 */}
+      <section className="bg-white border-2 border-gray-800 shadow-pixel-md p-8">
+        <h2 className="text-2xl font-pixel font-bold text-gray-800 text-center mb-8">
+          🌟 游戏特色
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h3 className="text-lg font-pixel font-bold text-blue-600">🎨 像素艺术风格</h3>
+            <p className="text-sm text-gray-600">
+              精美的8-bit像素艺术设计，重温经典游戏的美好回忆
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-pixel font-bold text-green-600">🎲 随机抽取机制</h3>
+            <p className="text-sm text-gray-600">
+              公平的概率系统，每次开盒都充满惊喜和期待
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-pixel font-bold text-purple-600">⭐ 稀有度系统</h3>
+            <p className="text-sm text-gray-600">
+              从普通到传说，不同稀有度的玩偶等你收集
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-pixel font-bold text-yellow-600">🏆 成就系统</h3>
+            <p className="text-sm text-gray-600">
+              完成收藏目标，解锁特殊成就和奖励
+            </p>
           </div>
         </div>
-
-        <div className="text-center mt-12">
-          <div className="bg-white bg-opacity-20 backdrop-blur-lg rounded-xl p-8 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-4">如何开始？</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white">
-              <div className="text-center">
-                <div className="text-4xl mb-2">1️⃣</div>
-                <h3 className="font-semibold mb-2">选择系列</h3>
-                <p className="text-sm opacity-90">浏览不同的盲盒系列</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-2">2️⃣</div>
-                <h3 className="font-semibold mb-2">抽取盲盒</h3>
-                <p className="text-sm opacity-90">点击抽取按钮获得惊喜</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-2">3️⃣</div>
-                <h3 className="font-semibold mb-2">收集展示</h3>
-                <p className="text-sm opacity-90">在个人收藏中展示战利品</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
